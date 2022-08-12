@@ -34,10 +34,21 @@ namespace ApiLoginFormunica.Services
             {
                 IdPerson=s.IdPerson,
                 Name=s.Name,
-                LasName=s.LastName,
+                LastName=s.LastName,
                 WorkerCode=(int)s.WorkerCode,
                 CreationDate=(DateTime)s.CreationDate,
-                Status=s.Status==true?"Activo":"Inactivo"
+                Status=s.Status==true?"Activo":"Inactivo",
+                informationC=_context.ContactInformations
+                .Where(w => w.Person==s.IdPerson)
+                .Select(s => new InformationC {
+                    CodePhone=s.CodePhone,
+                    Phone=s.Phone,
+                    Email=s.Email,
+                    Type=s.TypeContactNavigation.TypeContact1,
+                    CreationDate=(DateTime)s.CreationDate,
+                    Status=s.Status==true?"Activo":"Inactivo"
+                    })
+                .ToList()
             }).Paginar(param.pagina,param.registroPorPagina);
 
             return data;
@@ -48,7 +59,7 @@ namespace ApiLoginFormunica.Services
             
             Person person = Mapper<CreatePerson,Person>.Map(obj);
             ContactInformation contactInformation = new ContactInformation();
-            await _context.People.AddAsync(person);
+            _context.People.Add(person);
             await _context.SaveChangesAsync();
 
             contactInformation.Person=person.IdPerson;
@@ -65,7 +76,7 @@ namespace ApiLoginFormunica.Services
                 contactInformation.Status=item.Status;
 
                 _context.ContactInformations.Add(contactInformation);
-                _context.SaveChanges();
+                await _context.SaveChangesAsync();
             }
         }
     }

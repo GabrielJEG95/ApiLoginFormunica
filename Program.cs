@@ -46,6 +46,7 @@ builder.Services.AddTransient<ILoginService, LoginService>();
 builder.Services.AddTransient<IPersonInterface,PersonInterface>();
 builder.Services.AddTransient<ITypeContactService,TypeContactService>();
 builder.Services.AddTransient<IContactInformationService,ContactInformationService>();
+builder.Services.AddTransient<IUsersService,UsersService>();
 
 var app = builder.Build();
 

@@ -28,7 +28,7 @@ namespace ApiLoginFormunica.Services
         {
             var data = _context.TypeContacts.Where(w => 
                 (param.IdTypeContact.IsNullOrDefault()||w.IdTypeContact==param.IdTypeContact)
-                && (param.TypeContact.IsNullOrEmpty()||w.TypeContact1.ToUpper().Contains(param.TypeContact))
+                && (param.TypeContact.IsNullOrEmpty()||w.TypeContact1.ToUpper().Contains(param.TypeContact.ToUpper()))
             ).Select(s => new ListTypeContact
             {
                 IdTypeContact=s.IdTypeContact,

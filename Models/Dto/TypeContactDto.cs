@@ -16,7 +16,7 @@ namespace ApiLoginFormunica.Models.Dto
         }
 
         public int? IdTypeContact {get;set;}
-        public string TypeContact {get;set;}
+        public string? TypeContact {get;set;}
 
         private string _ordenarPor{get;set;}
         public new string OrdenarPor

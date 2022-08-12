@@ -17,7 +17,7 @@ namespace ApiLoginFormunica.Models.Dto
 
         public int? IdContactInformation {get;set;}
         public int? Phone {get;set;}
-        public string Email {get;set;}
+        public string? Email {get;set;}
         public int? IdPerson {get;set;}
         private string _ordenarPor{get;set;}
         public new string OrdenarPor
@@ -40,7 +40,7 @@ namespace ApiLoginFormunica.Models.Dto
         public class CreateContactInformation
         {
             public int? CodePhone {get;set;}
-            public int? CellPhone {get;set;}
+            public int? Phone {get;set;}
             public string Email {get;set;}
             [Required(ErrorMessage = "Debe especificar el tipo de contacto")]
             public int TypeContact {get;set;}
@@ -48,6 +48,25 @@ namespace ApiLoginFormunica.Models.Dto
             public int Person {get;set;}
             public DateTime CreationDate => DateTime.Now;
             public bool Status => true;
+        }
+
+        public class UpdateContactInformation
+        {
+            public int? CodePhone {get;set;}
+            public int? Phone {get;set;}
+            public string Email {get;set;}
+        }
+
+        public partial class ContactUpdate
+        {
+            public static ContactInformation Map(ContactInformation original,UpdateContactInformation upt)
+            {
+                original.CodePhone=upt.CodePhone;
+                original.Phone=upt.Phone;
+                original.Email=upt.Email;
+
+                return original;
+            }
         }
     }
 }

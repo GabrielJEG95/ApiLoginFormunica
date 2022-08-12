@@ -9,7 +9,7 @@ namespace ApiLoginFormunica.Services
     {
         string ObtenerCodigo();
         Task<string> ObtenerToken(string code, string state);
-        Task<string> GetToken(HttpContext httpContext);
+        //Task<string> GetToken(HttpContext httpContext);
     }
     public class LoginService : ILoginService
     {
@@ -65,7 +65,7 @@ namespace ApiLoginFormunica.Services
             return token;
         }
 
-        public async Task<string> GetToken(HttpContext httpContext)
+        /*public async Task<string> GetToken(HttpContext httpContext)
         {
             var AccesToken = await httpContext.GetTokenAsync("access_token");
             string api = _configuration["OAuth:Api"];
@@ -94,7 +94,7 @@ namespace ApiLoginFormunica.Services
 
             return Model.Content;
             
-        }
+        }*/
     }
 
     

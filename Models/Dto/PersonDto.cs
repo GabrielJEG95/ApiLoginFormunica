@@ -17,7 +17,7 @@ namespace ApiLoginFormunica.Models.Dto
         }
         public int? IdPerson {get;set;}
         public int? WorkerCode {get;set;}
-        public string Name {get;set;}
+        public string? Name {get;set;}
         private string _ordenarPor{get;set;}
         public new string OrdenarPor
         {
@@ -29,10 +29,11 @@ namespace ApiLoginFormunica.Models.Dto
         {
             public int IdPerson {get;set;}
             public string Name {get;set;}
-            public string LasName {get;set;}
+            public string LastName {get;set;}
             public int WorkerCode {get;set;}
             public DateTime CreationDate {get;set;}
             public string Status {get;set;}
+            public List<InformationC> informationC {get;set;}
         }
 
         public class CreatePerson
@@ -40,10 +41,8 @@ namespace ApiLoginFormunica.Models.Dto
             [Required(ErrorMessage = "El campo nombre es obligatorio")]
             public string Name {get;set;}
             [Required(ErrorMessage = "El campo Apellido es obligatorio")]
-            public string LasName {get;set;}
+            public string LastName {get;set;}
             [Required(ErrorMessage = "El numero de trabajador es obligatorio")]
-            [MinLength(1)]
-            [Range(1,20000)]
             public int WorkerCode {get;set;}
             public DateTime CreationDate => DateTime.Now;
             public bool Status =>true;
@@ -57,9 +56,18 @@ namespace ApiLoginFormunica.Models.Dto
             public string Email {get;set;}
             public int TypeContact {get;set;}
             [JsonIgnore]
-            public int Person {get;set;}
+            public int? Person {get;set;}
             public DateTime CreationDate => DateTime.Now;
             public bool Status => true;
+        }
+        public class InformationC
+        {
+            public int? CodePhone {get;set;}
+            public int? Phone {get;set;}
+            public string Email {get;set;}
+            public string? Type {get;set;}
+            public DateTime CreationDate {get;set;}
+            public string Status {get;set;}
         }
     }
 }

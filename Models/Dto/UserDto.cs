@@ -15,8 +15,8 @@ namespace ApiLoginFormunica.Models.Dto
         }
 
         public int? IdUsers {get;set;}
-        public string Token {get;set;}
-        public string Name {get;set;}
+        public string? Token {get;set;}
+        public string? Name {get;set;}
         private string _ordenarPor{get;set;}
         public new string OrdenarPor
         {
@@ -24,32 +24,28 @@ namespace ApiLoginFormunica.Models.Dto
             set {_ordenarPor =value;}
         }
 
-        public class UserDetail
-        {
-            public int IdUsers {get;set;}
-            public string UserName {get;set;}
-            public string Email {get;set;}
-            public string Status {get;set;}
-            public int IdPerson {get;set;}
-            public string Name {get;set;}
-            public string LasName {get;set;}
-            public string WorkerCode {get;set;}
-        }
-
+        
         public class ListUsers
         {
             public int IdUsers {get;set;}
             public string UserName {get;set;}
             public string Email {get;set;}
-            public string Status {get;set;}
-            public List<PersonUser> PersonUsers {get;set;}
-        }
-        public class PersonUser
-        {
-            public int IdPerson {get;set;}
             public string Name {get;set;}
-            public string LasName {get;set;}
-            public string WorkerCode {get;set;}
+            public string LastName {get;set;}
+            public int WorkerCode {get;set;}
+            public DateTime CreationDate {get;set;}
+            public string Status {get;set;}
+            
         }
+
+        public class createUsers
+        {
+            public string UserName {get;set;}
+            public string Email {get;set;}
+            public int IdPerson {get;set;}
+            public DateTime CreationDate => DateTime.Now;
+            public bool Status => true;
+        }
+        
     }
 }

@@ -8,6 +8,7 @@ namespace ApiLoginFormunica.Models
         public Country()
         {
             Cities = new HashSet<City>();
+            RelacionPaises = new HashSet<RelacionPaise>();
         }
 
         public int IdCountry { get; set; }
@@ -17,5 +18,6 @@ namespace ApiLoginFormunica.Models
         public DateTime? RemoveDate { get; set; }
 
         public virtual ICollection<City> Cities { get; set; }
+        public virtual ICollection<RelacionPaise> RelacionPaises { get; set; }
     }
 }

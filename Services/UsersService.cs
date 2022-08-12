@@ -20,6 +20,7 @@ namespace ApiLoginFormunica.Services
         PaginaCollection<ListUsers> ListarUsuarios (UserDto param);
         Task CrearUsuario(createUsers obj);
         void EliminarUsuario(int IdUsers);
+        PaginaCollection<userCountry> ListarPaisesUsuario (UserDto param);
         
     }
     public class UsersService:IUsersService
@@ -67,7 +68,13 @@ namespace ApiLoginFormunica.Services
                 WorkerCode=(int)s.IdPersonNavigation.WorkerCode,
                 CreationDate=(DateTime)s.CreationDate,
                 Status=s.Status==true?"Activo":"Inactivo",
-                //countryUsers=_context.RelacionPaises.Where(w => w.Idusers==s.IdUsers).Select(s2 => new CountryUser {IdCountry=s2.IdCountry})
+                countryUsers=_context.RelacionPaises
+                .Where(w => w.Idusers==s.IdUsers)
+                .Select(s2 => new CountryUser 
+                {
+                    IdCountry=s2.IdCountry,
+                    Country=s2.IdCountryNavigation.Country1
+                }).ToList()
             }).Paginar(param.pagina,param.registroPorPagina);
 
             return data;

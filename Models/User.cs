@@ -5,6 +5,11 @@ namespace ApiLoginFormunica.Models
 {
     public partial class User
     {
+        public User()
+        {
+            RelacionPaises = new HashSet<RelacionPaise>();
+        }
+
         public int IdUsers { get; set; }
         public string UserName { get; set; } = null!;
         public string Email { get; set; } = null!;
@@ -15,5 +20,6 @@ namespace ApiLoginFormunica.Models
         public bool? Status { get; set; }
 
         public virtual Person IdPersonNavigation { get; set; } = null!;
+        public virtual ICollection<RelacionPaise> RelacionPaises { get; set; }
     }
 }

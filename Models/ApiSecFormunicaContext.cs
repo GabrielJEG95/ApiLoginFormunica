@@ -210,8 +210,6 @@ namespace ApiLoginFormunica.Models
                     .HasMaxLength(100)
                     .IsUnicode(false);
 
-                entity.Property(e => e.Photo).HasMaxLength(1);
-
                 entity.Property(e => e.RemoveDate).HasColumnType("datetime");
 
                 entity.Property(e => e.Status)
@@ -331,6 +329,18 @@ namespace ApiLoginFormunica.Models
                     .IsRequired()
                     .HasColumnName("status")
                     .HasDefaultValueSql("((1))");
+
+                entity.HasOne(d => d.IdCountryNavigation)
+                    .WithMany(p => p.RelacionPaises)
+                    .HasForeignKey(d => d.IdCountry)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK__RelacionP__IdCou__619B8048");
+
+                entity.HasOne(d => d.IdusersNavigation)
+                    .WithMany(p => p.RelacionPaises)
+                    .HasForeignKey(d => d.Idusers)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK__RelacionP__Iduse__628FA481");
             });
 
             modelBuilder.Entity<TypeContact>(entity =>

@@ -36,11 +36,12 @@ namespace ApiLoginFormunica.Controllers
         }
 
         [HttpGet("/api/users/country")]
-        public IActionResult GetUserCountry()
+        public IActionResult GetUserCountry([FromQuery] UserDto param)
         {
             try
             {
-                return Ok();
+                var data = _usersService.ListarPaisesUsuario(param);
+                return Ok(data);
             }
             catch (System.Exception ex)
             {

@@ -48,6 +48,9 @@ builder.Services.AddTransient<ITypeContactService,TypeContactService>();
 builder.Services.AddTransient<IContactInformationService,ContactInformationService>();
 builder.Services.AddTransient<IUsersService,UsersService>();
 builder.Services.AddTransient<IEntidadService,EntidadService>();
+builder.Services.AddTransient<ICountryService,CountryService>();
+builder.Services.AddTransient<ICityService,CityService>();
+builder.Services.AddTransient<IBranchService,BranchService>();
 
 var app = builder.Build();
 

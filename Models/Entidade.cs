@@ -8,6 +8,7 @@ namespace ApiLoginFormunica.Models
         public Entidade()
         {
             Pantallas = new HashSet<Pantalla>();
+            RelacionEntidades = new HashSet<RelacionEntidade>();
         }
 
         public int IdEntidad { get; set; }
@@ -20,5 +21,6 @@ namespace ApiLoginFormunica.Models
         public DateTime? RemoveDate { get; set; }
 
         public virtual ICollection<Pantalla> Pantallas { get; set; }
+        public virtual ICollection<RelacionEntidade> RelacionEntidades { get; set; }
     }
 }

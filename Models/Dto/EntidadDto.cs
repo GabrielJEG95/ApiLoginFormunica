@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
@@ -35,6 +36,7 @@ namespace ApiLoginFormunica.Models.Dto
         }
         public class CreateEntidades
         {
+            [Required(ErrorMessage = "Favor ingresar el nombre de la entidad")]
             public string Entidad {get;set;}
             [JsonIgnore]
             public Guid? Identificador => Guid.NewGuid();
@@ -44,6 +46,16 @@ namespace ApiLoginFormunica.Models.Dto
             public byte[]? Photo {get;set;}
             public bool Status => true;
             public DateTime CreationDate => DateTime.Now;
+        }
+
+        public class asociarEntidad
+        {
+            [Required(ErrorMessage = "Debe seleccionar una entidad")]
+            public int IdEntidad {get;set;}
+            [Required(ErrorMessage = "Debe seleccionar un usuario al cual asignarle la entidad")]
+            public int IdUsers {get;set;}
+            public DateTime CreationDate => DateTime.Now;
+            public bool Status => true;
         }
     }
 

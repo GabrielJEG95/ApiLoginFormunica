@@ -57,6 +57,15 @@ namespace ApiLoginFormunica.Models.Dto
             public int IdCountry {get;set;}
             public string Country {get;set;}
         }
+        public class userEntidades:ListUsers
+        {
+            public List<EntidadUser> entidadUsers {get;set;}
+        }
+        public class EntidadUser
+        {
+            public int IdEntidad {get;set;}
+            public string Entidad {get;set;}
+        }
         
     }
 }

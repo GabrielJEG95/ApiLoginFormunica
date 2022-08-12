@@ -50,6 +50,21 @@ namespace ApiLoginFormunica.Controllers
             }
         }
 
+        [HttpGet("/api/users/entidades")]
+        public IActionResult GetUserEntidad ([FromQuery] UserDto param)
+        {
+            try
+            {
+                var data = _usersService.ListarEntidadesUsuario(param);
+                return Ok(data);
+            }
+            catch (System.Exception ex)
+            {
+                var error = RespuestaModel.ProcesarExcepción(ex);
+                return StatusCode(error.statusCode,error);
+            }
+        }
+
         [HttpPost]
         public async Task<IActionResult> PostUser([FromBody] createUsers obj)
         {

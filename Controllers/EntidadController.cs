@@ -50,6 +50,21 @@ namespace ApiLoginFormunica.Controllers
             }
         }
 
+        [HttpPost("/api/users/entidades")]
+        public async Task<IActionResult> PostRelacionEntidades([FromBody] asociarEntidad obj)
+        {
+            try
+            {
+                await _entidadService.asociarEntidadUsuario(obj);
+                return Ok(RespuestaModel.CreacionExitosa());
+            }
+            catch (System.Exception ex)
+            {
+                var error = RespuestaModel.ProcesarExcepción(ex);
+                return StatusCode(error.statusCode,error);
+            }
+        }
+
         [HttpPut("{IdEntidad:int}")]
         public IActionResult PutEntidad (int IdEntidad, [FromForm] UpdateEntidad obj)
         {

@@ -21,6 +21,7 @@ namespace ApiLoginFormunica.Services
         Task CrearUsuario(createUsers obj);
         void EliminarUsuario(int IdUsers);
         PaginaCollection<userCountry> ListarPaisesUsuario (UserDto param);
+        PaginaCollection<userEntidades> ListarEntidadesUsuario(UserDto param);
         
     }
     public class UsersService:IUsersService
@@ -74,6 +75,33 @@ namespace ApiLoginFormunica.Services
                 {
                     IdCountry=s2.IdCountry,
                     Country=s2.IdCountryNavigation.Country1
+                }).ToList()
+            }).Paginar(param.pagina,param.registroPorPagina);
+
+            return data;
+        }
+
+        public PaginaCollection<userEntidades> ListarEntidadesUsuario(UserDto param)
+        {
+            var data = _context.Users.Where(w => 
+                (param.IdUsers.IsNullOrDefault()||w.IdUsers==param.IdUsers)
+            &&  (param.Name.IsNullOrEmpty()||w.UserName.ToUpper().Contains(param.Name.ToUpper()))
+            ).Select(s => new userEntidades
+            {
+                IdUsers=s.IdUsers,
+                UserName=s.UserName,
+                Email=s.Email,
+                Name=s.IdPersonNavigation.Name,
+                LastName=s.IdPersonNavigation.LastName,
+                WorkerCode=(int)s.IdPersonNavigation.WorkerCode,
+                CreationDate=(DateTime)s.CreationDate,
+                Status=s.Status==true?"Activo":"Inactivo",
+                entidadUsers=_context.RelacionEntidades
+                .Where(w => w.IdUsers==s.IdUsers)
+                .Select(s => new EntidadUser
+                {
+                    IdEntidad=s.IdEntidad,
+                    Entidad=s.IdEntidadNavigation.Entidad
                 }).ToList()
             }).Paginar(param.pagina,param.registroPorPagina);
 

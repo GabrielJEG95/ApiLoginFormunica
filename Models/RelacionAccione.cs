@@ -11,5 +11,8 @@ namespace ApiLoginFormunica.Models
         public DateTime CreationDate { get; set; }
         public DateTime? RemoveDate { get; set; }
         public bool? Status { get; set; }
+
+        public virtual Accion IdAccionNavigation { get; set; } = null!;
+        public virtual User IdUsersNavigation { get; set; } = null!;
     }
 }

@@ -300,6 +300,18 @@ namespace ApiLoginFormunica.Models
                     .IsRequired()
                     .HasColumnName("status")
                     .HasDefaultValueSql("((1))");
+
+                entity.HasOne(d => d.IdAccionNavigation)
+                    .WithMany(p => p.RelacionAcciones)
+                    .HasForeignKey(d => d.IdAccion)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK__relacionA__IdAcc__66603565");
+
+                entity.HasOne(d => d.IdUsersNavigation)
+                    .WithMany(p => p.RelacionAcciones)
+                    .HasForeignKey(d => d.IdUsers)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK__relacionA__IdUse__656C112C");
             });
 
             modelBuilder.Entity<RelacionEntidade>(entity =>
@@ -318,6 +330,18 @@ namespace ApiLoginFormunica.Models
                 entity.Property(e => e.Status)
                     .IsRequired()
                     .HasDefaultValueSql("((1))");
+
+                entity.HasOne(d => d.IdEntidadNavigation)
+                    .WithMany(p => p.RelacionEntidades)
+                    .HasForeignKey(d => d.IdEntidad)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK__relacionE__IdEnt__6477ECF3");
+
+                entity.HasOne(d => d.IdUsersNavigation)
+                    .WithMany(p => p.RelacionEntidades)
+                    .HasForeignKey(d => d.IdUsers)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK__relacionE__IdUse__6383C8BA");
             });
 
             modelBuilder.Entity<RelacionPaise>(entity =>

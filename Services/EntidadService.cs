@@ -19,6 +19,7 @@ namespace ApiLoginFormunica.Services
         Task CrearEntidad (CreateEntidades obj);
         void EliminarEntidad (int IdEntidad);
         void ActualizarEntidad (int IdEntidad,UpdateEntidad obj);
+        Task asociarEntidadUsuario(asociarEntidad obj);
     }
     public class EntidadService:IEntidadService
     {
@@ -95,6 +96,13 @@ namespace ApiLoginFormunica.Services
             if(entidade==null)
                 throw new HttpStatusException(System.Net.HttpStatusCode.NotFound,"No se encontro el sistem solicitado"); 
             return entidade;
+        }
+
+        public async Task asociarEntidadUsuario(asociarEntidad obj)
+        {
+            RelacionEntidade relacionEntidade = Mapper<asociarEntidad,RelacionEntidade>.Map(obj);
+            await _context.RelacionEntidades.AddAsync(relacionEntidade);
+            await _context.SaveChangesAsync();
         }
     }
 }

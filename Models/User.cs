@@ -7,6 +7,8 @@ namespace ApiLoginFormunica.Models
     {
         public User()
         {
+            RelacionAcciones = new HashSet<RelacionAccione>();
+            RelacionEntidades = new HashSet<RelacionEntidade>();
             RelacionPaises = new HashSet<RelacionPaise>();
         }
 
@@ -20,6 +22,8 @@ namespace ApiLoginFormunica.Models
         public bool? Status { get; set; }
 
         public virtual Person IdPersonNavigation { get; set; } = null!;
+        public virtual ICollection<RelacionAccione> RelacionAcciones { get; set; }
+        public virtual ICollection<RelacionEntidade> RelacionEntidades { get; set; }
         public virtual ICollection<RelacionPaise> RelacionPaises { get; set; }
     }
 }

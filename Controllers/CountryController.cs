@@ -49,5 +49,21 @@ namespace ApiLoginFormunica.Controllers
                 return StatusCode(error.statusCode,error);
             }
         }
+
+        [HttpPost("/api/users/relacionpais")]
+        public async Task<IActionResult> PostRelationCountry ([FromBody] asociarPais obj)
+        {
+            try
+            {
+                await _countryService.asociarPaisUsuario(obj);
+                return Ok(RespuestaModel.CreacionExitosa());
+            }
+            catch (System.Exception ex)
+            {
+                var error = RespuestaModel.ProcesarExcepción(ex);
+                return StatusCode(error.statusCode,error);
+            }
+        }
+
     }
 }

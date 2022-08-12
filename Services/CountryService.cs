@@ -15,6 +15,7 @@ namespace ApiLoginFormunica.Services
     {
         PaginaCollection<ListCountry> listarPaises (CountryDto param);
         Task crearPais(CreateCountry obj);
+        Task asociarPaisUsuario (asociarPais obj);
     }
     public class CountryService:ICountryService
     {
@@ -44,6 +45,13 @@ namespace ApiLoginFormunica.Services
         {
             Country country = Mapper<CreateCountry,Country>.Map(obj);
             await _context.Countries.AddAsync(country);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task asociarPaisUsuario (asociarPais obj)
+        {
+            RelacionPaise relacionPaise = Mapper<asociarPais,RelacionPaise>.Map(obj);
+            await _context.RelacionPaises.AddAsync(relacionPaise);
             await _context.SaveChangesAsync();
         }
     }

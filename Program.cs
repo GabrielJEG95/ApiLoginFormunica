@@ -51,6 +51,8 @@ builder.Services.AddTransient<IEntidadService,EntidadService>();
 builder.Services.AddTransient<ICountryService,CountryService>();
 builder.Services.AddTransient<ICityService,CityService>();
 builder.Services.AddTransient<IBranchService,BranchService>();
+builder.Services.AddTransient<IPantallaService,PantallaService>();
+builder.Services.AddTransient<IAccionService,AccionService>();
 
 var app = builder.Build();
 

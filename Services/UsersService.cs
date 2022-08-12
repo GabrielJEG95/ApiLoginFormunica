@@ -36,7 +36,6 @@ namespace ApiLoginFormunica.Services
         {
             var data = _context.Users.Where(w => 
                 (param.IdUsers.IsNullOrDefault()||w.IdUsers==param.IdUsers)
-            &&  (param.Token.IsNullOrEmpty()||w.Token==param.Token)
             &&  (param.Name.IsNullOrEmpty()||w.UserName.ToUpper().Contains(param.Name.ToUpper()))
             ).Select(s => new ListUsers
             {
@@ -48,6 +47,27 @@ namespace ApiLoginFormunica.Services
                 WorkerCode=(int)s.IdPersonNavigation.WorkerCode,
                 CreationDate=(DateTime)s.CreationDate,
                 Status=s.Status==true?"Activo":"Inactivo"
+            }).Paginar(param.pagina,param.registroPorPagina);
+
+            return data;
+        }
+
+        public PaginaCollection<userCountry> ListarPaisesUsuario (UserDto param)
+        {
+            var data = _context.Users.Where(w => 
+                (param.IdUsers.IsNullOrDefault()||w.IdUsers==param.IdUsers)
+            &&  (param.Name.IsNullOrEmpty()||w.UserName.ToUpper().Contains(param.Name.ToUpper()))
+            ).Select(s => new userCountry
+            {
+                IdUsers=s.IdUsers,
+                UserName=s.UserName,
+                Email=s.Email,
+                Name=s.IdPersonNavigation.Name,
+                LastName=s.IdPersonNavigation.LastName,
+                WorkerCode=(int)s.IdPersonNavigation.WorkerCode,
+                CreationDate=(DateTime)s.CreationDate,
+                Status=s.Status==true?"Activo":"Inactivo",
+                //countryUsers=_context.RelacionPaises.Where(w => w.Idusers==s.IdUsers).Select(s2 => new CountryUser {IdCountry=s2.IdCountry})
             }).Paginar(param.pagina,param.registroPorPagina);
 
             return data;

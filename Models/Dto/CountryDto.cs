@@ -37,5 +37,12 @@ namespace ApiLoginFormunica.Models.Dto
             public bool Status => true;
             public DateTime CreationDate => DateTime.Now;
         }
+
+        public class asociarPais
+        {
+            public int IdCountry {get;set;}
+            public int IdUsers {get;set;}
+            public bool Status => true;
+        }
     }
 }

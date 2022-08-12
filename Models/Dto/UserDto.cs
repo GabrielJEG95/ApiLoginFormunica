@@ -46,6 +46,17 @@ namespace ApiLoginFormunica.Models.Dto
             public DateTime CreationDate => DateTime.Now;
             public bool Status => true;
         }
+
+        public class userCountry:ListUsers
+        {
+            public List<CountryUser> countryUsers {get;set;}
+        }
+
+        public class CountryUser 
+        {
+            public int IdCountry {get;set;}
+            public string Country {get;set;}
+        }
         
     }
 }

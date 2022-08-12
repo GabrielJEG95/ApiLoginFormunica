@@ -35,6 +35,20 @@ namespace ApiLoginFormunica.Controllers
             }
         }
 
+        [HttpGet("/api/users/country")]
+        public IActionResult GetUserCountry()
+        {
+            try
+            {
+                return Ok();
+            }
+            catch (System.Exception ex)
+            {
+                var error = RespuestaModel.ProcesarExcepción(ex);
+                return StatusCode(error.statusCode,error);
+            }
+        }
+
         [HttpPost]
         public async Task<IActionResult> PostUser([FromBody] createUsers obj)
         {

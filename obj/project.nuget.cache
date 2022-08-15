@@ -1,12 +1,13 @@
 {
   "version": 2,
-  "dgSpecHash": "xoRYJfJzgzejsNJbbuWi9xhCvIHirRBM8uWLZzL7FCCrbp26zk9TfPsk6lhFO1VUERmrjMXgI7gp4UBNq/4w8g==",
+  "dgSpecHash": "8hEUOgU0K0pTx6cv3WPiWNA+ppZanMhD2j8VFSRpcczZzC83N/lq/oxaM5oOa+YlQJGz6bnQD58ZNLjx0u2dEQ==",
   "success": true,
   "projectFilePath": "C:\\Users\\desarrolloit\\source\\repos\\ApiLoginFormunica\\ApiLoginFormunica.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\desarrolloit\\.nuget\\packages\\azure.core\\1.20.0\\azure.core.1.20.0.nupkg.sha512",
     "C:\\Users\\desarrolloit\\.nuget\\packages\\azure.identity\\1.5.0\\azure.identity.1.5.0.nupkg.sha512",
     "C:\\Users\\desarrolloit\\.nuget\\packages\\humanizer.core\\2.14.1\\humanizer.core.2.14.1.nupkg.sha512",
+    "C:\\Users\\desarrolloit\\.nuget\\packages\\microsoft.aspnetcore.authentication.jwtbearer\\6.0.8\\microsoft.aspnetcore.authentication.jwtbearer.6.0.8.nupkg.sha512",
     "C:\\Users\\desarrolloit\\.nuget\\packages\\microsoft.aspnetcore.authentication.openidconnect\\6.0.8\\microsoft.aspnetcore.authentication.openidconnect.6.0.8.nupkg.sha512",
     "C:\\Users\\desarrolloit\\.nuget\\packages\\microsoft.bcl.asyncinterfaces\\1.0.0\\microsoft.bcl.asyncinterfaces.1.0.0.nupkg.sha512",
     "C:\\Users\\desarrolloit\\.nuget\\packages\\microsoft.csharp\\4.5.0\\microsoft.csharp.4.5.0.nupkg.sha512",

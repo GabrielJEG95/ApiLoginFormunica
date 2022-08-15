@@ -49,5 +49,20 @@ namespace ApiLoginFormunica.Controllers
                 return StatusCode(error.statusCode,error);
             }
         }
+
+        [HttpPost("/users/pantalla")]
+        public async Task<IActionResult> PostAsociarPantalla([FromBody] asociarPantalla obj)
+        {
+            try
+            {
+                await _pantallaService.asociarPantallaUsuario(obj);
+                return Ok(RespuestaModel.CreacionExitosa());
+            }
+            catch (System.Exception ex)
+            {
+                var error = RespuestaModel.ProcesarExcepción(ex);
+                return StatusCode(error.statusCode,error);
+            }
+        }
     }
 }

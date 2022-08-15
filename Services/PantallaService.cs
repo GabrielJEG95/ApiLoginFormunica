@@ -15,6 +15,7 @@ namespace ApiLoginFormunica.Services
     {
         PaginaCollection<ListPantalla> ListarPantallas (PantallasDto param);
         Task crearPantalla (cretePantalla obj);
+        Task asociarPantallaUsuario (asociarPantalla obj);
     }
     public class PantallaService:IPantallaService
     {
@@ -48,6 +49,13 @@ namespace ApiLoginFormunica.Services
         {
             Pantalla pantalla = Mapper<cretePantalla,Pantalla>.Map(obj);
             await _context.Pantallas.AddAsync(pantalla);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task asociarPantallaUsuario (asociarPantalla obj)
+        {
+            RelacionPantalla relacionPantalla = Mapper<asociarPantalla,RelacionPantalla>.Map(obj);
+            await _context.RelacionPantallas.AddAsync(relacionPantalla);
             await _context.SaveChangesAsync();
         }
     }

@@ -65,6 +65,21 @@ namespace ApiLoginFormunica.Controllers
             }
         }
 
+        [HttpGet("/api/users/pantallas")]
+        public IActionResult GetUserPantalla ([FromQuery] UserDto param)
+        {
+            try
+            {
+                var data = _usersService.ListarPantallasUsuario(param);
+                return Ok(data);
+            }
+            catch (System.Exception ex)
+            {
+                var error = RespuestaModel.ProcesarExcepción(ex);
+                return StatusCode(error.statusCode,error);
+            }
+        }
+
         [HttpPost]
         public async Task<IActionResult> PostUser([FromBody] createUsers obj)
         {

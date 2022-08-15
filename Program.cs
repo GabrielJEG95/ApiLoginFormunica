@@ -1,8 +1,12 @@
+using System.Text;
 using ApiLoginFormunica.Models;
 using ApiLoginFormunica.Services;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 var MyAllowSpecificOrigins = "AllowAnyCorsPolicy";
@@ -32,15 +36,33 @@ builder.Services.AddCors(options =>
         });
 });
 
-/*builder.Services.AddAuthentication(options =>
+builder.Services.AddSwaggerGen(c =>
 {
-    options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-    options.DefaultChallengeScheme = OpenIdConnectDefaults.AuthenticationScheme;
-}).AddCookie()
-.AddOpenIdConnect(opt =>
-{
-    builder.Configuration.Bind("OAuth",opt);
-});*/
+    c.SwaggerDoc("v1", new OpenApiInfo { Title = "Login Formunica", Version = "v1" });
+        c.AddSecurityDefinition("Bearer",new OpenApiSecurityScheme{
+            Description="Encabezado de autorización de JWT usando el esquema Bearer. \r\n\r\n Ingrese 'Bearer' [espacio] y luego su token en la entrada de texto a continuación. \r\n\r\n Ejemplo: \" Bearer 12345abcdef \"",
+            Name="Authorization",
+            In=ParameterLocation.Header,
+            Type=SecuritySchemeType.ApiKey,
+            Scheme="Bearer"
+    });
+    c.AddSecurityRequirement(new OpenApiSecurityRequirement{
+        {
+            new OpenApiSecurityScheme
+                {
+                    Reference = new OpenApiReference
+                    {
+                        Type=ReferenceType.SecurityScheme,
+                        Id="Bearer"
+                    }
+                },
+            new string[]{}
+        }
+    });
+});
+
+
+
 
 builder.Services.AddTransient<ILoginService, LoginService>();
 builder.Services.AddTransient<IPersonInterface,PersonInterface>();
@@ -53,6 +75,7 @@ builder.Services.AddTransient<ICityService,CityService>();
 builder.Services.AddTransient<IBranchService,BranchService>();
 builder.Services.AddTransient<IPantallaService,PantallaService>();
 builder.Services.AddTransient<IAccionService,AccionService>();
+builder.Services.AddTransient<IActionAuditService,ActionAuditService>();
 
 var app = builder.Build();
 

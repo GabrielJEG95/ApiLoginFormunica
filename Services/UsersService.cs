@@ -22,6 +22,7 @@ namespace ApiLoginFormunica.Services
         void EliminarUsuario(int IdUsers);
         PaginaCollection<userCountry> ListarPaisesUsuario (UserDto param);
         PaginaCollection<userEntidades> ListarEntidadesUsuario(UserDto param);
+        PaginaCollection<userPantallas> ListarPantallasUsuario(UserDto param);
         
     }
     public class UsersService:IUsersService
@@ -108,6 +109,33 @@ namespace ApiLoginFormunica.Services
             return data;
         }
 
+        public PaginaCollection<userPantallas> ListarPantallasUsuario(UserDto param)
+        {
+            var data = _context.Users.Where(w => 
+                (param.IdUsers.IsNullOrDefault()||w.IdUsers==param.IdUsers)
+            &&  (param.Name.IsNullOrEmpty()||w.UserName.ToUpper().Contains(param.Name.ToUpper()))
+            ).Select(s => new userPantallas
+            {
+                IdUsers=s.IdUsers,
+                UserName=s.UserName,
+                Email=s.Email,
+                Name=s.IdPersonNavigation.Name,
+                LastName=s.IdPersonNavigation.LastName,
+                WorkerCode=(int)s.IdPersonNavigation.WorkerCode,
+                CreationDate=(DateTime)s.CreationDate,
+                Status=s.Status==true?"Activo":"Inactivo",
+                pantallaUsers=_context.RelacionPantallas
+                .Where(w => w.IdUsers==s.IdUsers)
+                .Select(s => new PantallaUser
+                {
+                    IdPantalla=s.IdPantalla,
+                    Pantalla=s.IdPantallaNavigation.Pantalla1,
+                    Entidad=s.IdPantallaNavigation.IdEntidadNavigation.Entidad
+                }).ToList()
+            }).Paginar(param.pagina,param.registroPorPagina);
+
+            return data;
+        }
         public async Task CrearUsuario(createUsers obj)
         {
             User user = Mapper<createUsers,User>.Map(obj);

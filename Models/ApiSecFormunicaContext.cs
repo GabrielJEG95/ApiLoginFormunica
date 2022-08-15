@@ -29,17 +29,11 @@ namespace ApiLoginFormunica.Models
         public virtual DbSet<RelacionAccione> RelacionAcciones { get; set; } = null!;
         public virtual DbSet<RelacionEntidade> RelacionEntidades { get; set; } = null!;
         public virtual DbSet<RelacionPaise> RelacionPaises { get; set; } = null!;
+        public virtual DbSet<RelacionPantalla> RelacionPantallas { get; set; } = null!;
         public virtual DbSet<TypeContact> TypeContacts { get; set; } = null!;
         public virtual DbSet<User> Users { get; set; } = null!;
 
-        /*protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            if (!optionsBuilder.IsConfigured)
-            {
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-                optionsBuilder.UseSqlServer("Server=L-DESARROLLOIT;Database=ApiSecFormunica; Trusted_Connection=True;TrustServerCertificate=true");
-            }
-        }*/
+       
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -81,13 +75,37 @@ namespace ApiLoginFormunica.Models
             modelBuilder.Entity<ActionsAudit>(entity =>
             {
                 entity.HasKey(e => e.IdActionsAudit)
-                    .HasName("PK__ActionsA__90F9475BC09401D0");
+                    .HasName("PK__ActionsA__90F9475BD403DB2F");
 
                 entity.ToTable("ActionsAudit");
 
                 entity.Property(e => e.CreationDate)
                     .HasColumnType("datetime")
                     .HasDefaultValueSql("(getdate())");
+
+                entity.HasOne(d => d.IdAccionNavigation)
+                    .WithMany(p => p.ActionsAudits)
+                    .HasForeignKey(d => d.IdAccion)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK__ActionsAu__IdAcc__70DDC3D8");
+
+                entity.HasOne(d => d.IdEntidadNavigation)
+                    .WithMany(p => p.ActionsAudits)
+                    .HasForeignKey(d => d.IdEntidad)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK__ActionsAu__IdEnt__72C60C4A");
+
+                entity.HasOne(d => d.IdPantallaNavigation)
+                    .WithMany(p => p.ActionsAudits)
+                    .HasForeignKey(d => d.IdPantalla)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK__ActionsAu__IdPan__71D1E811");
+
+                entity.HasOne(d => d.IdUserNavigation)
+                    .WithMany(p => p.ActionsAudits)
+                    .HasForeignKey(d => d.IdUser)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK__ActionsAu__IdUse__73BA3083");
             });
 
             modelBuilder.Entity<Branch>(entity =>
@@ -365,6 +383,38 @@ namespace ApiLoginFormunica.Models
                     .HasForeignKey(d => d.Idusers)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK__RelacionP__Iduse__628FA481");
+            });
+
+            modelBuilder.Entity<RelacionPantalla>(entity =>
+            {
+                entity.HasKey(e => e.IdRelationPantalla)
+                    .HasName("PK__relacion__2B762E619A49A963");
+
+                entity.ToTable("relacionPantalla");
+
+                entity.Property(e => e.CreationDate)
+                    .HasColumnType("datetime")
+                    .HasDefaultValueSql("(getdate())");
+
+                entity.Property(e => e.IdUsers).HasColumnName("IdUSers");
+
+                entity.Property(e => e.RemoveDate).HasColumnType("datetime");
+
+                entity.Property(e => e.Status)
+                    .IsRequired()
+                    .HasDefaultValueSql("((1))");
+
+                entity.HasOne(d => d.IdPantallaNavigation)
+                    .WithMany(p => p.RelacionPantallas)
+                    .HasForeignKey(d => d.IdPantalla)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK__relacionP__IdPan__6D0D32F4");
+
+                entity.HasOne(d => d.IdUsersNavigation)
+                    .WithMany(p => p.RelacionPantallas)
+                    .HasForeignKey(d => d.IdUsers)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK__relacionP__IdUSe__6B24EA82");
             });
 
             modelBuilder.Entity<TypeContact>(entity =>

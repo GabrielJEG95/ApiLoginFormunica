@@ -7,9 +7,11 @@ namespace ApiLoginFormunica.Models
     {
         public User()
         {
+            ActionsAudits = new HashSet<ActionsAudit>();
             RelacionAcciones = new HashSet<RelacionAccione>();
             RelacionEntidades = new HashSet<RelacionEntidade>();
             RelacionPaises = new HashSet<RelacionPaise>();
+            RelacionPantallas = new HashSet<RelacionPantalla>();
         }
 
         public int IdUsers { get; set; }
@@ -22,8 +24,10 @@ namespace ApiLoginFormunica.Models
         public bool? Status { get; set; }
 
         public virtual Person IdPersonNavigation { get; set; } = null!;
+        public virtual ICollection<ActionsAudit> ActionsAudits { get; set; }
         public virtual ICollection<RelacionAccione> RelacionAcciones { get; set; }
         public virtual ICollection<RelacionEntidade> RelacionEntidades { get; set; }
         public virtual ICollection<RelacionPaise> RelacionPaises { get; set; }
+        public virtual ICollection<RelacionPantalla> RelacionPantallas { get; set; }
     }
 }

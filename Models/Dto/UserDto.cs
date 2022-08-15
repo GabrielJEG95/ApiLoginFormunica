@@ -66,6 +66,17 @@ namespace ApiLoginFormunica.Models.Dto
             public int IdEntidad {get;set;}
             public string Entidad {get;set;}
         }
+
+        public class userPantallas:ListUsers
+        {
+            public List<PantallaUser> pantallaUsers {get;set;}
+        }
+        public class PantallaUser
+        {
+            public int IdPantalla {get;set;}
+            public string Pantalla {get;set;}
+            public string Entidad {get;set;}
+        }
         
     }
 }

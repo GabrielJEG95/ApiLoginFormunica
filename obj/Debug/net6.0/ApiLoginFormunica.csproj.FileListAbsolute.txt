@@ -77,3 +77,4 @@ C:\Users\desarrolloit\source\repos\ApiLoginFormunica\bin\Debug\net6.0\runtimes\w
 C:\Users\desarrolloit\source\repos\ApiLoginFormunica\bin\Debug\net6.0\runtimes\win\lib\netcoreapp3.0\System.Windows.Extensions.dll
 C:\Users\desarrolloit\source\repos\ApiLoginFormunica\bin\Debug\net6.0\Microsoft.AspNetCore.Authentication.OpenIdConnect.dll
 C:\Users\desarrolloit\source\repos\ApiLoginFormunica\bin\Debug\net6.0\Microsoft.IdentityModel.Abstractions.dll
+C:\Users\desarrolloit\source\repos\ApiLoginFormunica\bin\Debug\net6.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll

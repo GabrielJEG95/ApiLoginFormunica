@@ -8,6 +8,8 @@ namespace ApiLoginFormunica.Models
         public Pantalla()
         {
             Accions = new HashSet<Accion>();
+            ActionsAudits = new HashSet<ActionsAudit>();
+            RelacionPantallas = new HashSet<RelacionPantalla>();
         }
 
         public int IdPantalla { get; set; }
@@ -20,5 +22,7 @@ namespace ApiLoginFormunica.Models
 
         public virtual Entidade IdEntidadNavigation { get; set; } = null!;
         public virtual ICollection<Accion> Accions { get; set; }
+        public virtual ICollection<ActionsAudit> ActionsAudits { get; set; }
+        public virtual ICollection<RelacionPantalla> RelacionPantallas { get; set; }
     }
 }

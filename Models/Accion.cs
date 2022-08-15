@@ -7,6 +7,7 @@ namespace ApiLoginFormunica.Models
     {
         public Accion()
         {
+            ActionsAudits = new HashSet<ActionsAudit>();
             RelacionAcciones = new HashSet<RelacionAccione>();
         }
 
@@ -21,6 +22,7 @@ namespace ApiLoginFormunica.Models
 
         public virtual City IdCityNavigation { get; set; } = null!;
         public virtual Pantalla IdPantallaNavigation { get; set; } = null!;
+        public virtual ICollection<ActionsAudit> ActionsAudits { get; set; }
         public virtual ICollection<RelacionAccione> RelacionAcciones { get; set; }
     }
 }

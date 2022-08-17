@@ -7,8 +7,13 @@ using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using Microsoft.Identity.Web;
+using Microsoft.AspNetCore.Authentication.AzureAD.UI;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 
 var builder = WebApplication.CreateBuilder(args);
+ConfigurationManager configuration = builder.Configuration;
 var MyAllowSpecificOrigins = "AllowAnyCorsPolicy";
 
 // Add services to the container.
@@ -63,6 +68,20 @@ builder.Services.AddSwaggerGen(c =>
 
 
 
+builder.Services
+.Configure<OpenIdConnectOptions>(AzureADDefaults.OpenIdScheme, options =>
+{
+    options.Authority = options.Authority + "/v2.0/";
+    options.ClientId = builder.Configuration["OAuth:ClientId"];
+    options.CallbackPath = configuration["OAuth:RedirectUri"];
+    options.ResponseType = OpenIdConnectResponseType.CodeIdToken;
+    options.RequireHttpsMetadata = false;
+
+    options.TokenValidationParameters.ValidateIssuer = false; 
+    options.GetClaimsFromUserInfoEndpoint = true;
+    options.SaveTokens = true;
+    options.SignInScheme = IdentityConstants.ExternalScheme;
+});
 
 builder.Services.AddTransient<ILoginService, LoginService>();
 builder.Services.AddTransient<IPersonInterface,PersonInterface>();

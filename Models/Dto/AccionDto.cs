@@ -50,5 +50,15 @@ namespace ApiLoginFormunica.Models.Dto
             [JsonIgnore]
             public DateTime CreationDate => DateTime.Now;
         }
+
+        public class asocirAcciones
+        {
+            public int IdUsers {get;set;}
+            public int IdAccion {get;set;}
+            [JsonIgnore]
+            public DateTime CreationDate => DateTime.Now;
+            [JsonIgnore]
+            public bool Status =>true;
+        }
     }
 }

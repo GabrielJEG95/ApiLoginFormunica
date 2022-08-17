@@ -49,5 +49,20 @@ namespace ApiLoginFormunica.Controllers
                 return StatusCode(error.statusCode,error);
             }
         }
+
+        [HttpPost("/api/users/accion")]
+        public async Task<IActionResult> PostAsociarAccion([FromBody] asocirAcciones obj)
+        {
+            try
+            {
+                await _accionService.asociarAccion(obj);
+                return Ok(RespuestaModel.CreacionExitosa());
+            }
+            catch (System.Exception ex)
+            {
+                var error = RespuestaModel.ProcesarExcepción(ex);
+                return StatusCode(error.statusCode,error);
+            }
+        }
     }
 }

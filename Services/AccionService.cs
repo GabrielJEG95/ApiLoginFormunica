@@ -15,6 +15,7 @@ namespace ApiLoginFormunica.Services
     {
         PaginaCollection<ListAccion> ListarAcciones (AccionDto param);
         Task crearAccion (createAction obj);
+        Task asociarAccion(asocirAcciones obj);
     }
     public class AccionService:IAccionService
     {
@@ -48,6 +49,13 @@ namespace ApiLoginFormunica.Services
         {
             Accion accion = Mapper<createAction,Accion>.Map(obj);
             await _context.Accions.AddAsync(accion);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task asociarAccion(asocirAcciones obj)
+        {
+            RelacionAccione relacionAccione = Mapper<asocirAcciones,RelacionAccione>.Map(obj);
+            await _context.RelacionAcciones.AddAsync(relacionAccione);
             await _context.SaveChangesAsync();
         }
     }

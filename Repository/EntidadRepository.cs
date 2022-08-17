@@ -21,5 +21,20 @@ namespace ApiLoginFormunica.Repository
                 return null;
             return entidade;
         }
+        public Entidade ObtenerEntidadByName(string entidad)
+        {
+            Entidade entidade = _context.Entidades.Where(w => w.Entidad.ToUpper().Contains(entidad.ToUpper())).FirstOrDefault();
+            if(entidade==null)
+                return null;
+            return entidade;
+        }
+
+        public RelacionEntidade obtenerAccesoEntidad(int IdEntodad,int IdUser)
+        {
+            RelacionEntidade relacionEntidade = _context.RelacionEntidades.Where(w => w.IdEntidad==IdEntodad && w.IdUsers==IdUser).FirstOrDefault();
+            if(relacionEntidade==null)
+                return null;
+            return relacionEntidade;
+        }
     }
 }

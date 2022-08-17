@@ -5,8 +5,11 @@ using System.Threading.Tasks;
 using ApiLoginFormunica.Models.Dto;
 using ApiLoginFormunica.Services;
 using Common.Exceptions;
+using Common.Referencias;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using static ApiLoginFormunica.Models.Dto.EntidadDto;
+
 
 namespace ApiLoginFormunica.Controllers
 {
@@ -15,16 +18,25 @@ namespace ApiLoginFormunica.Controllers
     public class EntidadController : ControllerBase
     {
         private readonly IEntidadService _entidadService;
-        public EntidadController(IEntidadService entidadService)
+        private readonly ILoginService _loginService;
+        public EntidadController(IEntidadService entidadService,ILoginService loginService)
         {
             this._entidadService=entidadService;
+            this._loginService=loginService;
         }
 
+        
         [HttpGet]
         public IActionResult GetEntidades ([FromQuery] EntidadDto param)
         {
             try
             {
+                string token = Request.Headers["Authorization"];
+                bool user = _loginService.tienePermiso(token,EntidadReferencia.SistemaLogin ,PantallaReferencia.Entidades,AccionReferencia.Leer);
+
+                if(!user)
+                    return Unauthorized(MensajeReferencia.NoAutorizado);
+
                 var data = _entidadService.ListarEntidades(param);
                 return Ok(data);
             }

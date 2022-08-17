@@ -26,6 +26,7 @@ namespace ApiLoginFormunica.Controllers
             try
             {
                 var data = _actionAuditService.ListarAuditoria(param);
+                
                 return Ok(data);
             }
             catch (System.Exception ex)

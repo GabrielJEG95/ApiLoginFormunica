@@ -23,6 +23,8 @@ namespace ApiLoginFormunica.Services
         PaginaCollection<userCountry> ListarPaisesUsuario (UserDto param);
         PaginaCollection<userEntidades> ListarEntidadesUsuario(UserDto param);
         PaginaCollection<userPantallas> ListarPantallasUsuario(UserDto param);
+        List<ListUsers> ObtenerUsuarioId(int IdUsers);
+        
         
     }
     public class UsersService:IUsersService
@@ -102,7 +104,9 @@ namespace ApiLoginFormunica.Services
                 .Select(s => new EntidadUser
                 {
                     IdEntidad=s.IdEntidad,
-                    Entidad=s.IdEntidadNavigation.Entidad
+                    Entidad=s.IdEntidadNavigation.Entidad,
+                    Photo="data:image/png;base64,"+Convert.ToBase64String(s.IdEntidadNavigation.Photo),
+                    url=s.IdEntidadNavigation.Url
                 }).ToList()
             }).Paginar(param.pagina,param.registroPorPagina);
 
@@ -133,6 +137,25 @@ namespace ApiLoginFormunica.Services
                     Entidad=s.IdPantallaNavigation.IdEntidadNavigation.Entidad
                 }).ToList()
             }).Paginar(param.pagina,param.registroPorPagina);
+
+            return data;
+        }
+
+        public List<ListUsers> ObtenerUsuarioId(int IdUsers)
+        {
+            var data = _context.Users
+                .Where(w => w.IdUsers==IdUsers)
+                .Select(s => new ListUsers
+                {
+                    IdUsers=s.IdUsers,
+                    UserName=s.UserName,
+                    Name=s.IdPersonNavigation.Name,
+                    LastName=s.IdPersonNavigation.LastName,
+                    Email=s.Email,
+                    WorkerCode=(int)s.IdPersonNavigation.WorkerCode,
+                    CreationDate=(DateTime)s.CreationDate,
+                    Status=s.Status==true?"Activo":"Inactivo"
+                }).ToList();
 
             return data;
         }

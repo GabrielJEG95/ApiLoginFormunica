@@ -12,7 +12,7 @@ namespace ApiLoginFormunica.Services
         string ObtenerCodigo();
         Task<string> ObtenerToken(string code, string state);
         bool tienePermiso (string token,string sistema,string pantalla,string accion);
-        //Task<string> GetToken(HttpContext httpContext);
+        int getIdUser (string token);
     }
     public class LoginService : ILoginService
     {
@@ -77,7 +77,7 @@ namespace ApiLoginFormunica.Services
             return token;
         }
 
-        public string readToken(string Token)
+        public string[] readToken(string Token)
         {
             var handler = new JwtSecurityTokenHandler();
             string authHandler = Token;
@@ -85,8 +85,9 @@ namespace ApiLoginFormunica.Services
             var jsonToken = handler.ReadToken(authHandler);
             var tokenS=handler.ReadToken(authHandler) as JwtSecurityToken;
             var email = tokenS.Claims.First(claim => claim.Type == "unique_name").Value;
+            var expiracion = tokenS.Claims.First(claim => claim.Type == "exp").Value;
 
-            return email;
+            return new string[] {email,expiracion};
         }
 
         public bool existeUsuario (string email)
@@ -97,24 +98,39 @@ namespace ApiLoginFormunica.Services
             return true;
         }
 
-        public bool validarUsuario (string email)
+        public bool validarUsuario (string[] tokenInfo)
         {
             
-            bool validate = existeUsuario(email);
-
+            bool validate = existeUsuario(tokenInfo[0]);
+            DateTime actual = DateTime.Now;
+            long unixTime = ((DateTimeOffset)actual).ToUnixTimeSeconds();
+            long exp = Convert.ToInt32(tokenInfo[1]);
             if(!validate)
                 return false;
+
+            if(unixTime>exp)
+                return false;
             return true;
+        }
+
+        public int getIdUser (string token)
+        {
+            string[] infoToken = readToken(token);
+            var user = _userRepository.ObtenerUsuariobyEmail(infoToken[0]);
+            int Idusers = user.IdUsers;
+
+            return Idusers;
+
         }
         
         public bool tienePermiso (string token,string sistema,string pantalla,string accion)
         {
-            string emailRegister = readToken(token);
-            bool existeUsuario = validarUsuario(emailRegister);
+            string[] infoToken = readToken(token);
+            bool existeUsuario = validarUsuario(infoToken);
 
             if(existeUsuario)
             {
-                var user = _userRepository.ObtenerUsuariobyEmail(emailRegister);
+                var user = _userRepository.ObtenerUsuariobyEmail(infoToken[0]);
                 var entidad = _entidadRepository.ObtenerEntidadByName(sistema);
                 var accesoEntidad = _entidadRepository.obtenerAccesoEntidad(entidad.IdEntidad,user.IdUsers);
                 if(accesoEntidad!=null)

@@ -65,6 +65,8 @@ namespace ApiLoginFormunica.Models.Dto
         {
             public int IdEntidad {get;set;}
             public string Entidad {get;set;}
+            public string Photo {get;set;}
+            public string url {get;set;}
         }
 
         public class userPantallas:ListUsers

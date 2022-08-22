@@ -15,9 +15,11 @@ namespace ApiLoginFormunica.Controllers
     public class UserController : ControllerBase
     {
         private readonly IUsersService _usersService;
-        public UserController(IUsersService usersService)
+        private readonly ILoginService _loginService;
+        public UserController(IUsersService usersService,ILoginService loginService)
         {
             this._usersService=usersService;
+            this._loginService=loginService;
         }
 
         [HttpGet]
@@ -25,7 +27,25 @@ namespace ApiLoginFormunica.Controllers
         {
             try
             {
+                
                 var data = _usersService.ListarUsuarios(param);
+                return Ok(data);
+            }
+            catch (System.Exception ex)
+            {
+                var error = RespuestaModel.ProcesarExcepción(ex);
+                return StatusCode(error.statusCode,error);
+            }
+        }
+
+        [HttpGet("/api/users/id")]
+        public IActionResult GetUserById()
+        {
+            try
+            {
+                string token = Request.Headers["Authorization"];
+                int IdUser = _loginService.getIdUser(token);
+                var data = _usersService.ObtenerUsuarioId(IdUser);
                 return Ok(data);
             }
             catch (System.Exception ex)
@@ -51,10 +71,14 @@ namespace ApiLoginFormunica.Controllers
         }
 
         [HttpGet("/api/users/entidades")]
-        public IActionResult GetUserEntidad ([FromQuery] UserDto param)
+        public IActionResult GetEntidadByUserId ([FromQuery] UserDto param)
         {
             try
             {
+                string token = Request.Headers["Authorization"];
+                int IdUser = _loginService.getIdUser(token);
+                param.IdUsers=IdUser;
+
                 var data = _usersService.ListarEntidadesUsuario(param);
                 return Ok(data);
             }

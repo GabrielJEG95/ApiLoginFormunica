@@ -57,6 +57,23 @@ namespace ApiLoginFormunica.Models.Dto
             public DateTime CreationDate => DateTime.Now;
             public bool Status => true;
         }
+        public class EntidadPantalla
+        {
+            public int id { get; set; }
+            public string name{ get; set; }
+            public List<DisplayEntidad> children { get; set; }
+        }
+        public class DisplayEntidad
+        {
+            public int id { get; set; }
+            public string name{ get; set; }
+            public List<ActionsEntidad> children { get; set; }
+        }
+        public class ActionsEntidad
+        {
+            public int id { get; set; }
+            public string name{ get; set; }
+        }
     }
 
     public class UpdateEntidad

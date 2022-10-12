@@ -17,6 +17,8 @@ namespace ApiLoginFormunica.Models.Dto
         public int? IdUsers {get;set;}
         public string? Token {get;set;}
         public string? Name {get;set;}
+        public int? entidad {get;set;}
+        public int? pantalla {get;set;}
         private string _ordenarPor{get;set;}
         public new string OrdenarPor
         {
@@ -63,6 +65,7 @@ namespace ApiLoginFormunica.Models.Dto
         }
         public class EntidadUser
         {
+            public int IdRelationEntidad {get;set;}
             public int IdEntidad {get;set;}
             public string Entidad {get;set;}
             public string Photo {get;set;}
@@ -78,6 +81,19 @@ namespace ApiLoginFormunica.Models.Dto
             public int IdPantalla {get;set;}
             public string Pantalla {get;set;}
             public string Entidad {get;set;}
+        }
+
+        public class UserPantallaEntidad:ListUsers
+        {
+            public List<pantallaUserEntidad> pantallaUserEntidads {get;set;}
+        }
+
+        public class pantallaUserEntidad
+        {
+            public int IdRelationPantalla {get;set;}
+            public int IdPantalla {get;set;}
+            public string Pantalla {get;set;}
+            public DateTime Creationdate {get;set;}
         }
         
     }

@@ -19,22 +19,22 @@ namespace ApiLoginFormunica.Controllers
     {
         private readonly IEntidadService _entidadService;
         private readonly ILoginService _loginService;
-        public EntidadController(IEntidadService entidadService,ILoginService loginService)
+        public EntidadController(IEntidadService entidadService, ILoginService loginService)
         {
-            this._entidadService=entidadService;
-            this._loginService=loginService;
+            this._entidadService = entidadService;
+            this._loginService = loginService;
         }
 
-        
+
         [HttpGet]
-        public IActionResult GetEntidades ([FromQuery] EntidadDto param)
+        public IActionResult GetEntidades([FromQuery] EntidadDto param)
         {
             try
             {
                 string token = Request.Headers["Authorization"];
-                bool user = _loginService.tienePermiso(token,EntidadReferencia.SistemaLogin ,PantallaReferencia.Entidades,AccionReferencia.Leer);
+                bool user = _loginService.tienePermiso(token, EntidadReferencia.SistemaLogin, PantallaReferencia.Entidades, AccionReferencia.Leer);
 
-                if(!user)
+                if (!user)
                     return Unauthorized(MensajeReferencia.NoAutorizado);
 
                 var data = _entidadService.ListarEntidades(param);
@@ -43,7 +43,22 @@ namespace ApiLoginFormunica.Controllers
             catch (System.Exception ex)
             {
                 var error = RespuestaModel.ProcesarExcepción(ex);
-                return StatusCode(error.statusCode,error);
+                return StatusCode(error.statusCode, error);
+            }
+        }
+
+        [HttpGet("/api/entidad/permission")]
+        public IActionResult GetEntidadPermiso([FromQuery] EntidadDto param)
+        {
+            try
+            {
+                var data = _entidadService.ListarPantallaEntidades(param);
+                return Ok(data);
+            }
+            catch (Exception ex)
+            {
+                var error = RespuestaModel.ProcesarExcepción(ex);
+                return StatusCode(error.statusCode, error);
             }
         }
 

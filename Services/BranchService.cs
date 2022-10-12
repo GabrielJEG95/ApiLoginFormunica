@@ -35,6 +35,7 @@ namespace ApiLoginFormunica.Services
                 IdBranch=s.IdBranch,
                 Branch=s.Branch1,
                 Identifier=(Guid)s.Identifier,
+                Country=s.IdCityNavigation.IdCountryNavigation.Country1,
                 City=s.IdCityNavigation.City1,
                 Status=s.Status==true?"Activo":"Inactivo",
                 CreationDate=(DateTime)s.CreationDate

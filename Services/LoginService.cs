@@ -4,15 +4,21 @@ using ApiLoginFormunica.Models;
 using Microsoft.AspNetCore.Authentication;
 using System.IdentityModel.Tokens.Jwt;
 using ApiLoginFormunica.Repository;
+using System.DirectoryServices;
+using ApiLoginFormunica.Models.Dto;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
+using System.Security.Claims;
 
 namespace ApiLoginFormunica.Services
 {
     public interface ILoginService
     {
-        string ObtenerCodigo();
-        Task<string> ObtenerToken(string code, string state);
+        //string ObtenerCodigo();
+        //Task<string> ObtenerToken(string code, string state);
         bool tienePermiso (string token,string sistema,string pantalla,string accion);
         int getIdUser (string token);
+        string loginAD(loginDto param);
     }
     public class LoginService : ILoginService
     {
@@ -31,7 +37,52 @@ namespace ApiLoginFormunica.Services
             this._accionRepository=new AccionRepository(context);
         }
 
-        public string ObtenerCodigo()
+        public bool LoginActiveDirectory(loginDto param)
+        {
+            try
+            {
+                string domain = "FORMUNICA.COM";
+                
+
+                DirectoryEntry DE = new DirectoryEntry($"LDAP://{domain}",param.UserName,param.Password);
+                DirectorySearcher DS = new DirectorySearcher(DE);
+                SearchResult result = null;
+                result = DS.FindOne();
+                
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+            
+        }
+
+        public string loginAD(loginDto param)
+        {
+            if(LoginActiveDirectory(param))
+            {
+                var secretKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("@formunica_key@2022!"));
+                var secutiyKey=new SigningCredentials(secretKey,SecurityAlgorithms.HmacSha256);
+                var signingCredentials=new SigningCredentials(secretKey,SecurityAlgorithms.HmacSha256Signature);
+
+                ClaimsIdentity claimsIdentity= new ClaimsIdentity(new[]{new Claim(ClaimTypes.Name,param.UserName)});
+
+                var tokenhandler=new System.IdentityModel.Tokens.Jwt.JwtSecurityTokenHandler();
+                var jwtSecurityToken = tokenhandler.CreateJwtSecurityToken(
+                    subject:claimsIdentity,
+                    expires:DateTime.UtcNow.AddHours(6),
+                    signingCredentials:signingCredentials
+                    );
+                var jwtTokenString = tokenhandler.WriteToken(jwtSecurityToken);
+                return jwtTokenString;
+            } else {
+                throw new Exception("Nombre de Usuario o Contraseña incorrectos");
+            }
+        }
+
+        
+        /*public string ObtenerCodigo()
         {
             string Authorization = _configuration["OAuth:Authorization"];
             string Response = "code";
@@ -75,7 +126,7 @@ namespace ApiLoginFormunica.Services
             var result = JsonSerializer.Deserialize<TokenDto>(JsonToken);
             string token = result.access_token;
             return token;
-        }
+        }*/
 
         public string[] readToken(string Token)
         {
@@ -84,15 +135,15 @@ namespace ApiLoginFormunica.Services
             authHandler = authHandler.Replace("Bearer ","");
             var jsonToken = handler.ReadToken(authHandler);
             var tokenS=handler.ReadToken(authHandler) as JwtSecurityToken;
-            var email = tokenS.Claims.First(claim => claim.Type == "unique_name").Value;
+            var userName = tokenS.Claims.First(claim => claim.Type == "unique_name").Value;
             var expiracion = tokenS.Claims.First(claim => claim.Type == "exp").Value;
 
-            return new string[] {email,expiracion};
+            return new string[] {userName,expiracion};
         }
 
-        public bool existeUsuario (string email)
+        public bool existeUsuario (string user)
         {
-            bool existe = _userRepository.ValidateUserByEmail(email);
+            bool existe = _userRepository.ValidateUserByUserName(user);
             if(!existe)
                 return false;
             return true;
@@ -116,7 +167,7 @@ namespace ApiLoginFormunica.Services
         public int getIdUser (string token)
         {
             string[] infoToken = readToken(token);
-            var user = _userRepository.ObtenerUsuariobyEmail(infoToken[0]);
+            var user = _userRepository.ObtenerUsuarioByUsersName(infoToken[0]);
             int Idusers = user.IdUsers;
 
             return Idusers;
@@ -130,7 +181,7 @@ namespace ApiLoginFormunica.Services
 
             if(existeUsuario)
             {
-                var user = _userRepository.ObtenerUsuariobyEmail(infoToken[0]);
+                var user = _userRepository.ObtenerUsuarioByUsersName(infoToken[0]);
                 var entidad = _entidadRepository.ObtenerEntidadByName(sistema);
                 var accesoEntidad = _entidadRepository.obtenerAccesoEntidad(entidad.IdEntidad,user.IdUsers);
                 if(accesoEntidad!=null)

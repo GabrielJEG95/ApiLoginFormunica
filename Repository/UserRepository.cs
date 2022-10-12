@@ -29,6 +29,14 @@ namespace ApiLoginFormunica.Repository
             return user;
         }
 
+        public User ObtenerUsuarioByUsersName(string userName)
+        {
+            User user = _context.Users.Where(w => w.UserName==userName).FirstOrDefault();
+            if(user==null)
+                return null;
+            return user;
+        }
+
         public bool ValidaUser(int IdUsers)
         {
             User user =_context.Users.Find(IdUsers);
@@ -41,6 +49,15 @@ namespace ApiLoginFormunica.Repository
         {
             User user = _context.Users.Where(w => w.Email==email).FirstOrDefault();
 
+            if(user == null || user.Status==false)
+                return false;
+            return true;
+        }
+
+        public bool ValidateUserByUserName(string userName)
+        {
+            User user = _context.Users.Where(w => w.UserName==userName).FirstOrDefault();
+            
             if(user == null || user.Status==false)
                 return false;
             return true;

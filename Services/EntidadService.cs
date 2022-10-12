@@ -16,6 +16,7 @@ namespace ApiLoginFormunica.Services
     public interface IEntidadService
     {
         PaginaCollection<ListEntidades> ListarEntidades(EntidadDto param);
+        PaginaCollection<EntidadPantalla> ListarPantallaEntidades(EntidadDto param);
         Task CrearEntidad (CreateEntidades obj);
         void EliminarEntidad (int IdEntidad);
         void ActualizarEntidad (int IdEntidad,UpdateEntidad obj);
@@ -45,6 +46,34 @@ namespace ApiLoginFormunica.Services
                 Creationdate=(DateTime) s.CreationDate,
                 Photo=s.Photo!=null?"data:image/png;base64,"+Convert.ToBase64String(s.Photo):"data:image/png;base64,"
             }).Paginar(param.pagina,param.registroPorPagina);
+
+            return data;
+        }
+
+        public PaginaCollection<EntidadPantalla> ListarPantallaEntidades(EntidadDto param)
+        {
+            var data = _context.Entidades.Where(w =>
+                (param.IdEntidad.IsNullOrDefault() || w.IdEntidad == param.IdEntidad)
+            && (param.Entidad.IsNullOrEmpty() || w.Entidad.ToUpper().Contains(param.Entidad.ToUpper()))
+            ).Select(s => new EntidadPantalla
+            {
+                id = s.IdEntidad,
+                name = s.Entidad,
+                children = _context.Pantallas
+                .Where(w => w.IdEntidad == s.IdEntidad)
+                .Select(s => new DisplayEntidad
+                {
+                    id = s.IdPantalla,
+                    name = s.Pantalla1,
+                    children = _context.Accions
+                    .Where(w => w.IdPantalla==s.IdPantalla)
+                    .Select(s => new ActionsEntidad
+                    {
+                        id = s.IdAccion,
+                        name = s.Accion1
+                    }).ToList()
+                }).ToList()
+            }).Paginar(param.pagina, param.registroPorPagina);
 
             return data;
         }

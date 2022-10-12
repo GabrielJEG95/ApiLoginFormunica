@@ -17,6 +17,7 @@ namespace ApiLoginFormunica.Models.Dto
         }
         public int? IdAccion {get;set;}
         public string? Accion {get;set;}
+        public int? IdEntidad { get;set;}
         private string _ordenarPor{get;set;}
         public new string OrdenarPor
         {
@@ -30,6 +31,7 @@ namespace ApiLoginFormunica.Models.Dto
             public string Accion {get;set;}
             public string Pantalla {get;set;}
             public string City {get;set;}
+            public string Entidad { get; set; }
             public Guid Identificador {get;set;}
             public string Status {get;set;}
             public DateTime CreationDate {get;set;}
@@ -38,6 +40,7 @@ namespace ApiLoginFormunica.Models.Dto
         public class createAction
         {
             [Required(ErrorMessage = "Favor ingresar el nombre de la acción")]
+            [MaxLength(15,ErrorMessage = "Maximo 15 caracteres")]
             public string Accion1 {get;set;}
             [Required(ErrorMessage = "Favor seleccionar la pantalla de referencia")]
             public int IdPantalla {get;set;}

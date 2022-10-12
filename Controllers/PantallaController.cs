@@ -50,7 +50,7 @@ namespace ApiLoginFormunica.Controllers
             }
         }
 
-        [HttpPost("/users/pantalla")]
+        [HttpPost("/api/users/pantalla")]
         public async Task<IActionResult> PostAsociarPantalla([FromBody] asociarPantalla obj)
         {
             try

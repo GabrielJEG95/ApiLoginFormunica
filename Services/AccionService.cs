@@ -30,12 +30,14 @@ namespace ApiLoginFormunica.Services
             var data = _context.Accions.Where(w => 
                 (param.IdAccion.IsNullOrDefault()||w.IdAccion==param.IdAccion)
             &&  (param.Accion.IsNullOrEmpty()||w.Accion1.ToUpper().Contains(param.Accion.ToUpper()))
+            &&  (param.IdEntidad.IsNullOrDefault()|| w.IdPantallaNavigation.IdEntidadNavigation.IdEntidad == param.IdEntidad)
             ).Select(s => new ListAccion
             {
                 IdAccion=s.IdAccion,
                 Accion=s.Accion1,
                 Pantalla=s.IdPantallaNavigation.Pantalla1,
                 City=s.IdCityNavigation.City1,
+                Entidad=s.IdPantallaNavigation.IdEntidadNavigation.Entidad,
                 Identificador=(Guid)s.Identificador,
                 Status=s.Status==true?"Activo":"Inactivo",
                 CreationDate=(DateTime)s.CreationDate

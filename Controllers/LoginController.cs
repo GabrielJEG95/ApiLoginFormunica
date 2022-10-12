@@ -1,4 +1,5 @@
-﻿using ApiLoginFormunica.Services;
+﻿using ApiLoginFormunica.Models.Dto;
+using ApiLoginFormunica.Services;
 using Common.Exceptions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -18,7 +19,7 @@ namespace ApiLoginFormunica.Controllers
             this._loginService = loginService;
         }
 
-        [HttpGet("/get/authorization/code")]
+        /*[HttpGet("/get/authorization/code")]
         public IActionResult GetCode()
         {
             try
@@ -43,6 +44,21 @@ namespace ApiLoginFormunica.Controllers
                 return Ok(data);
             }
             catch (Exception ex)
+            {
+                var error = RespuestaModel.ProcesarExcepción(ex);
+                return StatusCode(error.statusCode,error);
+            }
+        }*/
+
+        [HttpPost]
+        public IActionResult LoginAD([FromBody] loginDto param)
+        {
+            try
+            {
+                var result = _loginService.loginAD(param);
+                return Ok(result);
+            }
+            catch (System.Exception ex)
             {
                 var error = RespuestaModel.ProcesarExcepción(ex);
                 return StatusCode(error.statusCode,error);

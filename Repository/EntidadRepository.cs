@@ -31,7 +31,7 @@ namespace ApiLoginFormunica.Repository
 
         public RelacionEntidade obtenerAccesoEntidad(int IdEntodad,int IdUser)
         {
-            RelacionEntidade relacionEntidade = _context.RelacionEntidades.Where(w => w.IdEntidad==IdEntodad && w.IdUsers==IdUser).FirstOrDefault();
+            RelacionEntidade relacionEntidade = _context.RelacionEntidades.Where(w => w.IdEntidad == IdEntodad && w.IdUsers == IdUser).FirstOrDefault();
             if(relacionEntidade==null)
                 return null;
             return relacionEntidade;

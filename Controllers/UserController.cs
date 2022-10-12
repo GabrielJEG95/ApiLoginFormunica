@@ -71,14 +71,17 @@ namespace ApiLoginFormunica.Controllers
         }
 
         [HttpGet("/api/users/entidades")]
-        public IActionResult GetEntidadByUserId ([FromQuery] UserDto param)
+        public IActionResult GetEntidadByUserIdToken ([FromQuery] UserDto param)
         {
             try
             {
-                string token = Request.Headers["Authorization"];
-                int IdUser = _loginService.getIdUser(token);
-                param.IdUsers=IdUser;
-
+                if(param.IdUsers == 0 || param.IdUsers == null)
+                {
+                    string token = Request.Headers["Authorization"];
+                    int IdUser = _loginService.getIdUser(token);
+                    param.IdUsers = IdUser;
+                }
+                
                 var data = _usersService.ListarEntidadesUsuario(param);
                 return Ok(data);
             }
@@ -95,6 +98,21 @@ namespace ApiLoginFormunica.Controllers
             try
             {
                 var data = _usersService.ListarPantallasUsuario(param);
+                return Ok(data);
+            }
+            catch (System.Exception ex)
+            {
+                var error = RespuestaModel.ProcesarExcepción(ex);
+                return StatusCode(error.statusCode,error);
+            }
+        }
+
+        [HttpGet("/api/users/pantallaEntidad")]
+        public IActionResult GetUserPantallEntidad ([FromQuery] UserDto param)
+        {
+            try
+            {
+                var data = _usersService.ListarPantallaUsuarioEntidad(param);
                 return Ok(data);
             }
             catch (System.Exception ex)

@@ -24,6 +24,7 @@ namespace ApiLoginFormunica.Services
         PaginaCollection<userEntidades> ListarEntidadesUsuario(UserDto param);
         PaginaCollection<userPantallas> ListarPantallasUsuario(UserDto param);
         List<ListUsers> ObtenerUsuarioId(int IdUsers);
+        PaginaCollection<UserPantallaEntidad> ListarPantallaUsuarioEntidad(UserDto param);
         
         
     }
@@ -103,6 +104,7 @@ namespace ApiLoginFormunica.Services
                 .Where(w => w.IdUsers==s.IdUsers)
                 .Select(s => new EntidadUser
                 {
+                    IdRelationEntidad= s.IdRelationEntidad,
                     IdEntidad=s.IdEntidad,
                     Entidad=s.IdEntidadNavigation.Entidad,
                     Photo="data:image/png;base64,"+Convert.ToBase64String(s.IdEntidadNavigation.Photo),
@@ -135,6 +137,34 @@ namespace ApiLoginFormunica.Services
                     IdPantalla=s.IdPantalla,
                     Pantalla=s.IdPantallaNavigation.Pantalla1,
                     Entidad=s.IdPantallaNavigation.IdEntidadNavigation.Entidad
+                }).ToList()
+            }).Paginar(param.pagina,param.registroPorPagina);
+
+            return data;
+        }
+
+        public PaginaCollection<UserPantallaEntidad> ListarPantallaUsuarioEntidad(UserDto param)
+        {
+            var data = _context.RelacionPantallas.Where(w =>
+                (param.IdUsers.IsNullOrDefault()|| w.IdUsers==param.IdUsers)
+            &&  (param.pantalla.IsNullOrDefault()||w.IdPantalla==param.pantalla)
+            ).Select(s => new UserPantallaEntidad
+            {
+                IdUsers=s.IdUsers,
+                UserName=s.IdUsersNavigation.UserName,
+                Email=s.IdUsersNavigation.Email,
+                Name=s.IdUsersNavigation.IdPersonNavigation.Name,
+                LastName=s.IdUsersNavigation.IdPersonNavigation.LastName,
+                CreationDate=(DateTime) s.IdUsersNavigation.CreationDate,
+                Status=s.IdUsersNavigation.Status==true?"Activo":"Inactivo",
+                pantallaUserEntidads= _context.RelacionPantallas
+                .Where(w => w.IdUsers==param.IdUsers && w.IdPantallaNavigation.IdEntidad==param.entidad)
+                .Select(s => new pantallaUserEntidad
+                {
+                    IdRelationPantalla=s.IdRelationPantalla,
+                    IdPantalla=s.IdPantalla,
+                    Pantalla=s.IdPantallaNavigation.Pantalla1,
+                    Creationdate=(DateTime)s.CreationDate
                 }).ToList()
             }).Paginar(param.pagina,param.registroPorPagina);
 

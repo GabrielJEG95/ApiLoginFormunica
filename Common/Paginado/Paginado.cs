@@ -6,7 +6,7 @@ namespace Common.Paginado
         const int maxPageSize = 500;
         public int pagina { get; set; } = 1;
 
-        private int _registroPorPagina = 20;
+        private int _registroPorPagina = 10;
         public int registroPorPagina
         {
             get

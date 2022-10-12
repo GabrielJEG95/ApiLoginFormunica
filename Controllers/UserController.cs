@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using ApiLoginFormunica.Models.Dto;
 using ApiLoginFormunica.Services;
 using Common.Exceptions;
+using Common.Referencias;
 using Microsoft.AspNetCore.Mvc;
 using static ApiLoginFormunica.Models.Dto.UserDto;
 
@@ -27,6 +28,11 @@ namespace ApiLoginFormunica.Controllers
         {
             try
             {
+                string token = Request.Headers["Authorization"];
+                bool user = _loginService.tienePermiso(token, EntidadReferencia.SistemaLogin, PantallaReferencia.Usuarios, AccionReferencia.Leer);
+
+                if (!user)
+                    return Unauthorized(MensajeReferencia.NoAutorizado);
                 
                 var data = _usersService.ListarUsuarios(param);
                 return Ok(data);
@@ -97,6 +103,12 @@ namespace ApiLoginFormunica.Controllers
         {
             try
             {
+                string token = Request.Headers["Authorization"];
+                bool user = _loginService.tienePermiso(token, EntidadReferencia.SistemaLogin, PantallaReferencia.Usuarios, AccionReferencia.Leer);
+
+                if (!user)
+                    return Unauthorized(MensajeReferencia.NoAutorizado);
+                    
                 var data = _usersService.ListarPantallasUsuario(param);
                 return Ok(data);
             }

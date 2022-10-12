@@ -52,6 +52,12 @@ namespace ApiLoginFormunica.Controllers
         {
             try
             {
+                string token = Request.Headers["Authorization"];
+                bool user = _loginService.tienePermiso(token, EntidadReferencia.SistemaLogin, PantallaReferencia.Entidades, AccionReferencia.Leer);
+
+                if (!user)
+                    return Unauthorized(MensajeReferencia.NoAutorizado);
+
                 var data = _entidadService.ListarPantallaEntidades(param);
                 return Ok(data);
             }
@@ -67,6 +73,12 @@ namespace ApiLoginFormunica.Controllers
         {
             try
             {
+                string token = Request.Headers["Authorization"];
+                bool user = _loginService.tienePermiso(token, EntidadReferencia.SistemaLogin, PantallaReferencia.Entidades, AccionReferencia.Crear);
+
+                if (!user)
+                    return Unauthorized(MensajeReferencia.NoAutorizado);
+
                 await _entidadService.CrearEntidad(obj);
                 return Ok(RespuestaModel.CreacionExitosa());
             }
@@ -82,6 +94,12 @@ namespace ApiLoginFormunica.Controllers
         {
             try
             {
+                string token = Request.Headers["Authorization"];
+                bool user = _loginService.tienePermiso(token, EntidadReferencia.SistemaLogin, PantallaReferencia.Entidades, AccionReferencia.AgregarPermiso);
+
+                if (!user)
+                    return Unauthorized(MensajeReferencia.NoAutorizado);
+
                 await _entidadService.asociarEntidadUsuario(obj);
                 return Ok(RespuestaModel.CreacionExitosa());
             }
@@ -97,6 +115,12 @@ namespace ApiLoginFormunica.Controllers
         {
             try
             {
+                string token = Request.Headers["Authorization"];
+                bool user = _loginService.tienePermiso(token, EntidadReferencia.SistemaLogin, PantallaReferencia.Entidades, AccionReferencia.Actualizar);
+
+                if (!user)
+                    return Unauthorized(MensajeReferencia.NoAutorizado);
+
                 _entidadService.ActualizarEntidad(IdEntidad,obj);
                 return Ok(RespuestaModel.ActualizacionExitosa());
             }
@@ -112,6 +136,12 @@ namespace ApiLoginFormunica.Controllers
         {
             try
             {
+                string token = Request.Headers["Authorization"];
+                bool user = _loginService.tienePermiso(token, EntidadReferencia.SistemaLogin, PantallaReferencia.Entidades, AccionReferencia.Eliminar);
+
+                if (!user)
+                    return Unauthorized(MensajeReferencia.NoAutorizado);
+
                 _entidadService.EliminarEntidad(IdEntidad);
                 return Ok(RespuestaModel.EliminacionExitosa());
             }

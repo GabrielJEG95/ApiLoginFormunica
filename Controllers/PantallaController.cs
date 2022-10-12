@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using ApiLoginFormunica.Models.Dto;
 using ApiLoginFormunica.Services;
 using Common.Exceptions;
+using Common.Referencias;
 using Microsoft.AspNetCore.Mvc;
 using static ApiLoginFormunica.Models.Dto.PantallasDto;
 
@@ -15,9 +16,11 @@ namespace ApiLoginFormunica.Controllers
     public class PantallaController : ControllerBase
     {
         private readonly IPantallaService _pantallaService;
-        public PantallaController(IPantallaService pantallaService)
+        private readonly ILoginService _loginService;
+        public PantallaController(IPantallaService pantallaService, ILoginService loginService)
         {
             this._pantallaService=pantallaService;
+            this._loginService=loginService;
         }
 
         [HttpGet]
@@ -55,6 +58,12 @@ namespace ApiLoginFormunica.Controllers
         {
             try
             {
+                string token = Request.Headers["Authorization"];
+                bool user = _loginService.tienePermiso(token, EntidadReferencia.SistemaLogin, PantallaReferencia.Entidades, AccionReferencia.AgregarPermiso);
+
+                if (!user)
+                    return Unauthorized(MensajeReferencia.NoAutorizado);
+                    
                 await _pantallaService.asociarPantallaUsuario(obj);
                 return Ok(RespuestaModel.CreacionExitosa());
             }

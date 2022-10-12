@@ -7,6 +7,7 @@ namespace Common.Referencias
         public const string Leer = "Leer";
         public const string Actualizar = "Actualizar";
         public const string Eliminar = "Eliminar";
+        public const string AgregarPermiso = "Agregar Permiso";
 
     }
 
